@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using StealAllTheCatsAssignment.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +7,8 @@ ConfigurationManager configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnStr")));
+
+builder.Services.AddHttpClient();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
