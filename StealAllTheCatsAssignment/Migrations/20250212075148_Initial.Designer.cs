@@ -12,8 +12,8 @@ using StealAllTheCatsAssignment.Data;
 namespace StealAllTheCatsAssignment.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250211073242_initial")]
-    partial class initial
+    [Migration("20250212075148_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace StealAllTheCatsAssignment.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CatTag", b =>
+                {
+                    b.Property<int>("CatsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CatsId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("CatTag", (string)null);
+                });
 
             modelBuilder.Entity("StealAllTheCatsAssignment.Models.Cat", b =>
                 {
@@ -36,6 +51,9 @@ namespace StealAllTheCatsAssignment.Migrations
                     b.Property<string>("CatId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Height")
                         .HasColumnType("int");
@@ -52,26 +70,6 @@ namespace StealAllTheCatsAssignment.Migrations
                     b.ToTable("Cats");
                 });
 
-            modelBuilder.Entity("StealAllTheCatsAssignment.Models.CatTags", b =>
-                {
-                    b.Property<int>("CatId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Created")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("CatId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("CatTags");
-                });
-
             modelBuilder.Entity("StealAllTheCatsAssignment.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -79,6 +77,9 @@ namespace StealAllTheCatsAssignment.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -89,17 +90,17 @@ namespace StealAllTheCatsAssignment.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("StealAllTheCatsAssignment.Models.CatTags", b =>
+            modelBuilder.Entity("CatTag", b =>
                 {
                     b.HasOne("StealAllTheCatsAssignment.Models.Cat", null)
                         .WithMany()
-                        .HasForeignKey("CatId")
+                        .HasForeignKey("CatsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("StealAllTheCatsAssignment.Models.Tag", null)
                         .WithMany()
-                        .HasForeignKey("TagId")
+                        .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

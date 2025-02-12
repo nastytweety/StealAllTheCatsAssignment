@@ -1,36 +1,47 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using StealAllTheCatsAssignment.Data;
-using System.Collections.Generic;
+using StealAllTheCatsAssignment.DTOs;
+using StealAllTheCatsAssignment.Models;
+using StealAllTheCatsAssignment.Services;
+using System.Net;
 
 namespace StealAllTheCatsAssignment.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    
     [ApiController]
+    [Route("api/cats/")]
     public class CatsController : ControllerBase
     {
 
         private readonly ILogger<CatsController> _logger;
-        private readonly AppDbContext _appDbContext;
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        private readonly IAppService _appService;
 
-        public CatsController(ILogger<CatsController> logger, AppDbContext appDbContext, HttpClient httpClient, IConfiguration configuration)
+        public CatsController(ILogger<CatsController> logger, IAppService appService)
         {
             _logger = logger;
-            _appDbContext = appDbContext;
-            _httpClient = httpClient;
-            _configuration = configuration;
+            _appService = appService;
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<string>>> Fetch()
+        [Route("[action]")]
+        public async Task<ActionResult<ResponseDto>> Fetch()
         {
-            _httpClient.BaseAddress = new Uri(_configuration.GetSection("Settings").GetValue<string>("baseUrl"));
-            _httpClient.DefaultRequestHeaders.Add("x-api-key", _configuration.GetSection("Settings").GetValue<string>("apiKey"));
-            var response = await _httpClient.GetAsync("?limit=25&has_breeds=1");
-            var data = await response.Content.ReadAsStringAsync();
-            return Ok(data);
+            var response = await _appService.DeserializeAndStoreInDb();
+            return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Cat?>> Get(int id)
+        {
+            var cat = await _appService.GetCatById(id);
+            if(cat is null)
+                return NotFound();
+            return Ok(cat);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<Cat?>> Get([FromQuery]string? tag,int pagenum,int pagesize)
+        {
+            return NotFound();
         }
     }
 }

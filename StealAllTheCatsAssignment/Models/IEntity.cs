@@ -1,9 +1,7 @@
 ﻿namespace StealAllTheCatsAssignment.Models
 {
-    public class CatTags
+    public class IEntity
     {
-        public int CatId { get; set; } 
-        public int TagId { get; set; }
         public DateTime Created { get; set; }
     }
 }

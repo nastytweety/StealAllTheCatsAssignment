@@ -2,7 +2,7 @@
 
 namespace StealAllTheCatsAssignment.Models
 {
-    public class Tag
+    public class Tag : IEntity
     {
         [Key]
         public int Id { get; set; }
