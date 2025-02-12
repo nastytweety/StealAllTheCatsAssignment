@@ -1,4 +1,5 @@
-﻿using StealAllTheCatsAssignment.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using StealAllTheCatsAssignment.Data;
 using StealAllTheCatsAssignment.DTOs;
 using StealAllTheCatsAssignment.Models;
 using System.Text.Json;
@@ -39,6 +40,19 @@ namespace StealAllTheCatsAssignment.Services
             return await _context.Cats.FindAsync(id);
         }
 
+        public async Task<IEnumerable<Cat?>> GetCatsByTag(string tag)
+        {
+            return await _context.Cats.Include(x=>x.Tags)
+                                      .Where(x=>x.Tags.Select(x=>x.Name).Contains(tag))
+                                      .Select(x => new Cat { CatId = x.CatId, Created = x.Created, Height = x.Height, Width = x.Width })
+                                      .AsNoTracking().ToListAsync();
+        }
+
+        public async Task<IEnumerable<Cat?>> GetAllCats()
+        {
+            return await _context.Cats.Select(x=>new Cat {CatId = x.CatId, Created=x.Created, Height= x.Height, Width=x.Width}).ToListAsync();
+        }
+
 
         private async Task<Cat> MapCatDtoToCatEntity(CatDto catDto)
         {
@@ -52,7 +66,7 @@ namespace StealAllTheCatsAssignment.Services
 
         private async Task<List<Tag>> MapCatDtoToTagEntity(CatDto catDto)
         {
-            List<Tag> tags = new List<Tag>();
+            List<Tag> tagsList = new List<Tag>();
             foreach (var breed in catDto.breeds)
             {
                 var temperaments = breed.temperament.ToString().Split(',').ToList();
@@ -60,10 +74,10 @@ namespace StealAllTheCatsAssignment.Services
                 {
                     Tag tag = new Tag();
                     tag.Name = temperament;
-                    tags.Add(tag);
+                    tagsList.Add(tag);
                 }
             }
-            return tags;
+            return tagsList;
         }
 
         private async Task<byte[]> GetFileFromUrl(string url)

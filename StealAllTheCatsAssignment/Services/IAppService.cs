@@ -7,5 +7,7 @@ namespace StealAllTheCatsAssignment.Services
     {
         public Task<ResponseDto> DeserializeAndStoreInDb();
         public Task<Cat?> GetCatById(int id);
+        public Task<IEnumerable<Cat?>> GetCatsByTag(string tag);
+        public Task<IEnumerable<Cat?>> GetAllCats();
     }
 }

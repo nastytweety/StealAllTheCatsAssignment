@@ -26,7 +26,9 @@ namespace StealAllTheCatsAssignment.Controllers
         public async Task<ActionResult<ResponseDto>> Fetch()
         {
             var response = await _appService.DeserializeAndStoreInDb();
-            return Ok();
+            if (response.Status.Equals("200"))
+                return Ok(response.Message);
+            return BadRequest(response.Message);
         }
 
         [HttpGet("{id}")]
@@ -39,9 +41,18 @@ namespace StealAllTheCatsAssignment.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Cat?>> Get([FromQuery]string? tag,int pagenum,int pagesize)
+        public async Task<ActionResult<Cat?>> Get([FromQuery]string? tag,int page=1,int pageSize=10)
         {
-            return NotFound();
+            IEnumerable<Cat?> cats;
+            if (tag is null)
+                cats = await _appService.GetAllCats();
+            else
+                cats = await _appService.GetCatsByTag(tag);
+
+            if (cats is null)
+                return NoContent();
+
+            return Ok(cats.Skip((page - 1) * pageSize).Take(pageSize));
         }
     }
 }
