@@ -3,7 +3,6 @@ using StealAllTheCatsAssignment.Data;
 using StealAllTheCatsAssignment.DTOs;
 using StealAllTheCatsAssignment.Mapper;
 using StealAllTheCatsAssignment.Models;
-using System.Security.Cryptography.Xml;
 using System.Text.Json;
 
 namespace StealAllTheCatsAssignment.Services
@@ -27,7 +26,7 @@ namespace StealAllTheCatsAssignment.Services
             var jsonData = await InitializeClient();
             List<JsonCatDto>? catsWithTags = JsonSerializer.Deserialize<List<JsonCatDto>>(jsonData);
             if(catsWithTags is null)
-                return new ResponseDto { Status="400", Message="Could not get any data from thecatapi"};
+                return new ResponseDto { Status="400", Message="Could not get any data from thecatapi.com"};
 
             foreach (var catwithtags in catsWithTags) 
             {
@@ -35,18 +34,15 @@ namespace StealAllTheCatsAssignment.Services
                 var tags = _mapper.MapJsonCatDtoToTagEntity(catwithtags);
                 await StoreInDb(cat,tags);
             }
-            return new ResponseDto { Status="200", Message = "Cats stored in db successfully" };  
+            return new ResponseDto { Status="200", Message = "Cats successfully stored in db" };  
         }
 
-        public async Task<CatDto?> GetCatById(int id)
+        public async Task<Cat?> GetCatById(int id)
         {
-            var cat = await _context.Cats.FindAsync(id);
-            if (cat is null)
-                return null;
-            return _mapper.MapCatToCatDto(cat);
+            return await _context.Cats.FindAsync(id);
         }
 
-        public async Task<IEnumerable<CatDto?>> GetCatsByTag(string tag)
+        public async Task<IEnumerable<CatDto>?> GetCatsByTag(string tag)
         {
             var tagId = await _context.Tags.Where(x=>x.Name == tag).Select(x=>x.Id).SingleAsync();
             var cats = await _context.Cats.Include(x => x.CatTags)
@@ -58,7 +54,7 @@ namespace StealAllTheCatsAssignment.Services
                 return _mapper.MapCatToCatDto(cats);
         }
 
-        public async Task<IEnumerable<CatDto?>> GetAllCats()
+        public async Task<IEnumerable<CatDto>?> GetAllCats()
         {
             var cats = await _context.Cats.ToListAsync();
             if (cats is null)
@@ -73,17 +69,6 @@ namespace StealAllTheCatsAssignment.Services
             _httpClient.DefaultRequestHeaders.Add("x-api-key", _configuration.GetSection("Settings").GetValue<string>("apiKey"));
             var response = await _httpClient.GetAsync(_configuration.GetSection("Settings").GetValue<string>("query"));
             return await response.Content.ReadAsStringAsync();
-        }
-
-        private async Task ClearDb()
-        {
-            if (_context.Cats.Any() || _context.Tags.Any())
-            {
-                _context.Cats.Clear();
-                _context.Tags.Clear();
-                await _context.SaveChangesAsync();
-            }
-            return;
         }
 
         private async Task StoreInDb(Cat cat, IEnumerable<Tag> tags)
@@ -107,6 +92,17 @@ namespace StealAllTheCatsAssignment.Services
             }
             await _context.CatTags.AddRangeAsync(catTags);
             await _context.SaveChangesAsync();
+        }
+
+        private async Task ClearDb()
+        {
+            if (_context.Cats.Any() || _context.Tags.Any())
+            {
+                _context.Cats.Clear();
+                _context.Tags.Clear();
+                await _context.SaveChangesAsync();
+            }
+            return;
         }
     }
 }
