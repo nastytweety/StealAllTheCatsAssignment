@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using StealAllTheCatsAssignment.DTOs;
+using StealAllTheCatsAssignment.Filters;
 using StealAllTheCatsAssignment.Models;
 using StealAllTheCatsAssignment.Services;
-using System.Net;
 
 namespace StealAllTheCatsAssignment.Controllers
 {
-    
+
     [ApiController]
-    [Route("api/cats/")]
+    [Route("api/cats")]
     public class CatsController : ControllerBase
     {
 
@@ -32,7 +32,7 @@ namespace StealAllTheCatsAssignment.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cat?>> Get(int id)
+        public async Task<ActionResult<CatDto?>> Get(int id)
         {
             var cat = await _appService.GetCatById(id);
             if(cat is null)
@@ -41,18 +41,19 @@ namespace StealAllTheCatsAssignment.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Cat?>> Get([FromQuery]string? tag,int page=1,int pageSize=10)
+        [ValidationActionFilter]
+        public async Task<ActionResult<CatDto?>> Get([FromQuery] QueryModel query)
         {
-            IEnumerable<Cat?> cats;
-            if (tag is null)
+            IEnumerable<CatDto?> cats;
+            if (query.tag is null)
                 cats = await _appService.GetAllCats();
             else
-                cats = await _appService.GetCatsByTag(tag);
+                cats = await _appService.GetCatsByTag(query.tag);
 
             if (cats is null)
                 return NoContent();
 
-            return Ok(cats.Skip((page - 1) * pageSize).Take(pageSize));
+            return Ok(cats.Skip((query.page - 1) * query.pageSize).Take(query.pageSize));
         }
     }
 }

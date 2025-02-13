@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StealAllTheCatsAssignment.Data;
+using StealAllTheCatsAssignment.Mapper;
 using StealAllTheCatsAssignment.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ ConfigurationManager configuration = builder.Configuration;
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnStr")));
 
 builder.Services.AddScoped<IAppService, AppService>();
+
+builder.Services.AddScoped<IMapper, Mapper>();
 
 builder.Services.AddHttpClient();
 

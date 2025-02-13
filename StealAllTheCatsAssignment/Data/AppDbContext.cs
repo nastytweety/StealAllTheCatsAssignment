@@ -11,15 +11,13 @@ namespace StealAllTheCatsAssignment.Data
         }
         public DbSet<Cat> Cats { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<CatTag> CatTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Cat>()
-                .HasMany(e => e.Tags)
-                .WithMany(e => e.Cats)
-                .UsingEntity(e => e.ToTable("CatTags"));
+            modelBuilder.Entity<CatTag>().HasOne(m => m.Cat).WithMany(m => m.CatTags).HasForeignKey(m => m.CatId);
+            modelBuilder.Entity<CatTag>().HasOne(m => m.Tag).WithMany(m => m.CatTags).HasForeignKey(m => m.TagId);
         }
-
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
@@ -35,6 +33,5 @@ namespace StealAllTheCatsAssignment.Data
             var result = await base.SaveChangesAsync(cancellationToken);
             return result;
         }
-
     }
 }

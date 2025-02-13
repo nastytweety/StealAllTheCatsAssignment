@@ -1,24 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace StealAllTheCatsAssignment.DTOs
+﻿namespace StealAllTheCatsAssignment.DTOs
 {
-    public class CatDto
+    /// <summary>
+    /// Skip the Image property because of the delay it introduces
+    /// </summary>
+    public record CatDto
     {
-        [Required]
-        public string id {  get; set; } = String.Empty;
-        [Required]
-        public string url { get; set; } = String.Empty;
-        [Required]
-        public int width { get; set; }
-        [Required]
-        public int height { get; set; }
-        [Required]
-        public List<Breed> breeds { get; set; } = null!;
-    } 
-
-    public class Breed
-    {
-        public string temperament { get; set; } = String.Empty;
+        public string CatId { get; set; } = String.Empty;
+        public int Height { get; set; }
+        public int Width { get; set; }  
+        public DateTime Created { get; set; }
     }
-
 }

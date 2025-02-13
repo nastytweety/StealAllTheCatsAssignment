@@ -6,8 +6,8 @@ namespace StealAllTheCatsAssignment.Services
     public interface IAppService
     {
         public Task<ResponseDto> DeserializeAndStoreInDb();
-        public Task<Cat?> GetCatById(int id);
-        public Task<IEnumerable<Cat?>> GetCatsByTag(string tag);
-        public Task<IEnumerable<Cat?>> GetAllCats();
+        public Task<CatDto?> GetCatById(int id);
+        public Task<IEnumerable<CatDto?>> GetCatsByTag(string tag);
+        public Task<IEnumerable<CatDto?>> GetAllCats();
     }
 }

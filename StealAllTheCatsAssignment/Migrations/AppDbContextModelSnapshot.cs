@@ -17,25 +17,10 @@ namespace StealAllTheCatsAssignment.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CatTag", b =>
-                {
-                    b.Property<int>("CatsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CatsId", "TagsId");
-
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("CatTags", (string)null);
-                });
 
             modelBuilder.Entity("StealAllTheCatsAssignment.Models.Cat", b =>
                 {
@@ -47,7 +32,7 @@ namespace StealAllTheCatsAssignment.Migrations
 
                     b.Property<string>("CatId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -64,7 +49,33 @@ namespace StealAllTheCatsAssignment.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CatId")
+                        .IsUnique();
+
                     b.ToTable("Cats");
+                });
+
+            modelBuilder.Entity("StealAllTheCatsAssignment.Models.CatTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CatId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("CatTags");
                 });
 
             modelBuilder.Entity("StealAllTheCatsAssignment.Models.Tag", b =>
@@ -80,26 +91,43 @@ namespace StealAllTheCatsAssignment.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("CatTag", b =>
+            modelBuilder.Entity("StealAllTheCatsAssignment.Models.CatTag", b =>
                 {
-                    b.HasOne("StealAllTheCatsAssignment.Models.Cat", null)
-                        .WithMany()
-                        .HasForeignKey("CatsId")
+                    b.HasOne("StealAllTheCatsAssignment.Models.Cat", "Cat")
+                        .WithMany("CatTags")
+                        .HasForeignKey("CatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StealAllTheCatsAssignment.Models.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
+                    b.HasOne("StealAllTheCatsAssignment.Models.Tag", "Tag")
+                        .WithMany("CatTags")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cat");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("StealAllTheCatsAssignment.Models.Cat", b =>
+                {
+                    b.Navigation("CatTags");
+                });
+
+            modelBuilder.Entity("StealAllTheCatsAssignment.Models.Tag", b =>
+                {
+                    b.Navigation("CatTags");
                 });
 #pragma warning restore 612, 618
         }

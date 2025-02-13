@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StealAllTheCatsAssignment.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class StealTheCats : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace StealAllTheCatsAssignment.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CatId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CatId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Width = table.Column<int>(type: "int", nullable: false),
                     Height = table.Column<int>(type: "int", nullable: false),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
@@ -34,7 +34,7 @@ namespace StealAllTheCatsAssignment.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -43,40 +43,59 @@ namespace StealAllTheCatsAssignment.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CatTag",
+                name: "CatTags",
                 columns: table => new
                 {
-                    CatsId = table.Column<int>(type: "int", nullable: false),
-                    TagsId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CatId = table.Column<int>(type: "int", nullable: false),
+                    TagId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CatTag", x => new { x.CatsId, x.TagsId });
+                    table.PrimaryKey("PK_CatTags", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CatTag_Cats_CatsId",
-                        column: x => x.CatsId,
+                        name: "FK_CatTags_Cats_CatId",
+                        column: x => x.CatId,
                         principalTable: "Cats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CatTag_Tags_TagsId",
-                        column: x => x.TagsId,
+                        name: "FK_CatTags_Tags_TagId",
+                        column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CatTag_TagsId",
-                table: "CatTag",
-                column: "TagsId");
+                name: "IX_Cats_CatId",
+                table: "Cats",
+                column: "CatId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatTags_CatId",
+                table: "CatTags",
+                column: "CatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatTags_TagId",
+                table: "CatTags",
+                column: "TagId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tags_Name",
+                table: "Tags",
+                column: "Name",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CatTag");
+                name: "CatTags");
 
             migrationBuilder.DropTable(
                 name: "Cats");

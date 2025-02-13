@@ -1,6 +1,6 @@
 ﻿namespace StealAllTheCatsAssignment.DTOs
 {
-    public class ResponseDto
+    public record ResponseDto
     {
         public string Message { get; set; } = String.Empty;
 
