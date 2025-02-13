@@ -66,7 +66,7 @@ namespace StealAllTheCatsAssignment.Services
         private async Task<string> InitializeClient()
         {
             _httpClient.BaseAddress = new Uri(_configuration.GetSection("Settings").GetValue<string>("baseUrl"));
-            _httpClient.DefaultRequestHeaders.Add("x-api-key", _configuration.GetSection("Settings").GetValue<string>("apiKey"));
+            _httpClient.DefaultRequestHeaders.Add("x-api-key", _configuration.GetValue<string>("apiKey"));
             var response = await _httpClient.GetAsync(_configuration.GetSection("Settings").GetValue<string>("query"));
             return await response.Content.ReadAsStringAsync();
         }
