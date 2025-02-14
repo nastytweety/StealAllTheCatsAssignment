@@ -2,7 +2,7 @@
 using StealAllTheCatsAssignment.Application.IRepository;
 using StealAllTheCatsAssignment.Application.IService;
 using StealAllTheCatsAssignment.Domain.Models;
-using StealAllTheCatsAssignment.Mapper;
+using StealAllTheCatsAssignment.Application.Mapper;
 
 namespace StealAllTheCatsAssignment.Services
 {

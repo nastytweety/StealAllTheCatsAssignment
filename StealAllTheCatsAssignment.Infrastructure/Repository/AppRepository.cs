@@ -24,6 +24,7 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             return await _context.Cats.Where(x=>x.Id == id).AsNoTracking().SingleOrDefaultAsync();
         }
 
+
         public async Task<Tag?> GetTag(string tagName)
         {
             return await _context.Tags.Where(x => x.Name == tagName).AsNoTracking().SingleOrDefaultAsync();

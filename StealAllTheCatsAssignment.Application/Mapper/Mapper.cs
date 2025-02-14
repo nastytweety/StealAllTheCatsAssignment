@@ -1,7 +1,7 @@
 ﻿using StealAllTheCatsAssignment.Application.IRepository;
 using StealAllTheCatsAssignment.Domain.Models;
 
-namespace StealAllTheCatsAssignment.Mapper
+namespace StealAllTheCatsAssignment.Application.Mapper
 {
     public class Mapper : IMapper
     {

@@ -1,6 +1,6 @@
 ﻿using StealAllTheCatsAssignment.Domain.Models;
 
-namespace StealAllTheCatsAssignment.Mapper
+namespace StealAllTheCatsAssignment.Application.Mapper
 {
     public interface IMapper
     {

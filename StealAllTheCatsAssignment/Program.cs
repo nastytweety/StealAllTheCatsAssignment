@@ -5,7 +5,7 @@ using StealAllTheCatsAssignment.Application.IService;
 using StealAllTheCatsAssignment.Application.Mapperly;
 using StealAllTheCatsAssignment.Data;
 using StealAllTheCatsAssignment.Infrastructure.Repository;
-using StealAllTheCatsAssignment.Mapper;
+using StealAllTheCatsAssignment.Application.Mapper;
 using StealAllTheCatsAssignment.Services;
 using System.Reflection;
 
