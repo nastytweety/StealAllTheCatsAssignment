@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using StealAllTheCatsAssignment.Models;
+using StealAllTheCatsAssignment.Domain.Models;
 
 namespace StealAllTheCatsAssignment.Data
 {

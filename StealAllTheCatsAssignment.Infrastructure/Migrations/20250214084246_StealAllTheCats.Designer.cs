@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StealAllTheCatsAssignment.Data;
 
 #nullable disable
 
-namespace StealAllTheCatsAssignment.Migrations
+namespace StealAllTheCatsAssignment.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250214084246_StealAllTheCats")]
+    partial class StealAllTheCats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace StealAllTheCatsAssignment.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("StealAllTheCatsAssignment.Models.Cat", b =>
+            modelBuilder.Entity("StealAllTheCatsAssignment.Domain.Models.Cat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +58,7 @@ namespace StealAllTheCatsAssignment.Migrations
                     b.ToTable("Cats");
                 });
 
-            modelBuilder.Entity("StealAllTheCatsAssignment.Models.CatTag", b =>
+            modelBuilder.Entity("StealAllTheCatsAssignment.Domain.Models.CatTag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,7 +81,7 @@ namespace StealAllTheCatsAssignment.Migrations
                     b.ToTable("CatTags");
                 });
 
-            modelBuilder.Entity("StealAllTheCatsAssignment.Models.Tag", b =>
+            modelBuilder.Entity("StealAllTheCatsAssignment.Domain.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,15 +104,15 @@ namespace StealAllTheCatsAssignment.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("StealAllTheCatsAssignment.Models.CatTag", b =>
+            modelBuilder.Entity("StealAllTheCatsAssignment.Domain.Models.CatTag", b =>
                 {
-                    b.HasOne("StealAllTheCatsAssignment.Models.Cat", "Cat")
+                    b.HasOne("StealAllTheCatsAssignment.Domain.Models.Cat", "Cat")
                         .WithMany("CatTags")
                         .HasForeignKey("CatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StealAllTheCatsAssignment.Models.Tag", "Tag")
+                    b.HasOne("StealAllTheCatsAssignment.Domain.Models.Tag", "Tag")
                         .WithMany("CatTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -120,12 +123,12 @@ namespace StealAllTheCatsAssignment.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("StealAllTheCatsAssignment.Models.Cat", b =>
+            modelBuilder.Entity("StealAllTheCatsAssignment.Domain.Models.Cat", b =>
                 {
                     b.Navigation("CatTags");
                 });
 
-            modelBuilder.Entity("StealAllTheCatsAssignment.Models.Tag", b =>
+            modelBuilder.Entity("StealAllTheCatsAssignment.Domain.Models.Tag", b =>
                 {
                     b.Navigation("CatTags");
                 });

@@ -1,4 +1,4 @@
-﻿namespace StealAllTheCatsAssignment.Models
+﻿namespace StealAllTheCatsAssignment.Domain.Models
 {
     public class IEntity
     {

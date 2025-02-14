@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace StealAllTheCatsAssignment.Migrations
+namespace StealAllTheCatsAssignment.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class StealTheCats : Migration
+    public partial class StealAllTheCats : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

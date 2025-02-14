@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace StealAllTheCatsAssignment.Models
+namespace StealAllTheCatsAssignment.Domain.Models
 {
     public class CatTag
     {

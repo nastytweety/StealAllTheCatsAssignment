@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace StealAllTheCatsAssignment.Models
+namespace StealAllTheCatsAssignment.Application.DTOs
 {
 
     public class QueryModel
@@ -8,7 +8,7 @@ namespace StealAllTheCatsAssignment.Models
         /// <summary>
         /// The tagname as a string with a maximum 20 char length (optional)
         /// </summary>
-        [StringLength(20,MinimumLength = 1)]
+        [StringLength(20, MinimumLength = 1)]
         public string? tag { get; set; }
         /// <summary>
         /// The page number as an integer >0 (required) 

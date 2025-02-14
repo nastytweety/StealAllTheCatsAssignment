@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace StealAllTheCatsAssignment.DTOs
+namespace StealAllTheCatsAssignment.Domain.Models
 {
     public record JsonCatDto
     {

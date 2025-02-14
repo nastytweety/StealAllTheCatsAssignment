@@ -1,7 +1,7 @@
-﻿namespace StealAllTheCatsAssignment.DTOs
+﻿namespace StealAllTheCatsAssignment.Application.DTOs
 {
     /// <summary>
-    /// Skip the Image property because of the delay it introduces
+    /// Skip the Image property because of the delay it introduces in api endpoints
     /// </summary>
     public record CatDto
     {

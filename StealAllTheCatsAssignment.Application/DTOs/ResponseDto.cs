@@ -1,4 +1,4 @@
-﻿namespace StealAllTheCatsAssignment.DTOs
+﻿namespace StealAllTheCatsAssignment.Application.DTOs
 {
     public record ResponseDto
     {

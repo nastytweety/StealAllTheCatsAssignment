@@ -1,5 +1,4 @@
-﻿using StealAllTheCatsAssignment.DTOs;
-using StealAllTheCatsAssignment.Models;
+﻿using StealAllTheCatsAssignment.Domain.Models;
 
 namespace StealAllTheCatsAssignment.Mapper
 {
@@ -7,7 +6,5 @@ namespace StealAllTheCatsAssignment.Mapper
     {
         public Task<Cat> MapJsonCatDtoToCatEntity(JsonCatDto catDto);
         public IEnumerable<Tag> MapJsonCatDtoToTagEntity(JsonCatDto catDto);
-        public CatDto MapCatToCatDto(Cat cat);
-        public IEnumerable<CatDto> MapCatToCatDto(IEnumerable<Cat> cats);
     }
 }
