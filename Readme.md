@@ -1,4 +1,4 @@
-StealAllTheCats-Assignment is an example of consuming and providing webservices.
+StealAllTheCats-Assignment is an example of consuming and providing webservices illustrating clean architecture.
 
 #Installation
 
