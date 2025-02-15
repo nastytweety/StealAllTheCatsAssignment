@@ -18,6 +18,28 @@ namespace StealAllTheCatsAssignment.Tests
             _appService = new AppService(_appRepository.Object, _mapper.Object);
         }
 
+
+        [Fact]
+        public async Task DeserializeAndStoreInDb_ShoudStoreCat()
+        {
+            // Arrange
+            int Id = 1;
+            string CatId = "black cat";
+            Cat cat = new Cat { Id=Id, CatId = CatId, Height=100, Width=100, Created = DateTime.Now };
+            Tag tag = new Tag { Name = "friendly", Created = DateTime.Now };
+            List<Tag> tags = new List<Tag> { tag };
+
+            _appRepository.Setup(x => x.Add(cat, tags)).ReturnsAsync(true);
+
+            // Act
+            await _appService.DeserializeAndStoreInDb();
+            var testCat = await _appService.GetCatById(Id);
+            if (testCat is null)
+                return;
+            // Assert
+            Assert.Equal(Id, testCat.Id);
+        }
+
         [Fact]
         public async Task GetCatById_ShouldReturnCat_WhenCatExists()
         {

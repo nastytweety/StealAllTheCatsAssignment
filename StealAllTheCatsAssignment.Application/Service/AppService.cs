@@ -20,7 +20,7 @@ namespace StealAllTheCatsAssignment.Application.Services
         {
             var catsWithTags = await _appRepository.InitializeAndDeserialize();
             if (catsWithTags is null) 
-                return new ResponseDto { Status ="404", Message="Cats not found in thecatapi.com"};
+                return new ResponseDto { Status ="400", Message="Cats could not be found in thecatapi.com"};
 
             foreach (var catWithTags in catsWithTags) 
             {
@@ -29,9 +29,9 @@ namespace StealAllTheCatsAssignment.Application.Services
                 var tags = MapJsonCatDtoToTagEntity(catWithTags);
                 var response = await _appRepository.Add(cat, tags);
                 if(response == false)
-                    return new ResponseDto { Status = "400", Message = "Cats could not be stored" };
+                    return new ResponseDto { Status = "400", Message = "Cats could not be stored in db" };
             }
-            return new ResponseDto { Status = "200", Message = "Success" };
+            return new ResponseDto { Status = "200", Message = "Cats successfully stored in db" };
         }
 
         public async Task<Cat?> GetCatById(int id)
