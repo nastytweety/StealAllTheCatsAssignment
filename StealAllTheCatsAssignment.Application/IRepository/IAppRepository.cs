@@ -8,7 +8,7 @@ namespace StealAllTheCatsAssignment.Application.IRepository
         public Task<Tag?> GetTag(string tagName);
         public Task<Cat?> Get(int id);
         public Task<IEnumerable<Cat>?> GetAll();
-        public Task<IEnumerable<JsonCatDto>?> InitializeClient();
+        public Task<IEnumerable<JsonCatDto>?> InitializeAndDeserialize();
         public Task<byte[]> GetFileFromUrl(string url);
         public Task ClearDb();
     }

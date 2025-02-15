@@ -15,9 +15,9 @@ namespace StealAllTheCatsAssignment.API.Controllers
 
         private readonly ILogger<CatsController> _logger;
         private readonly IAppService _appService;
-        private readonly IDtoMapper _mapper;
+        private readonly IMapper _mapper;
 
-        public CatsController(ILogger<CatsController> logger, IAppService appService, IDtoMapper mapper)
+        public CatsController(ILogger<CatsController> logger, IAppService appService, IMapper mapper)
         {
             _logger = logger;
             _appService = appService;

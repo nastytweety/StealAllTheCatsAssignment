@@ -1,6 +1,6 @@
 using Moq;
 using StealAllTheCatsAssignment.Application.IRepository;
-using StealAllTheCatsAssignment.Application.Mapper;
+using StealAllTheCatsAssignment.Application.Mapperly;
 using StealAllTheCatsAssignment.Domain.Models;
 using StealAllTheCatsAssignment.Services;
 
@@ -53,9 +53,6 @@ namespace StealAllTheCatsAssignment.Tests
             // Arrange
             var catTagName = "friendly";
             Cat cat = new Cat { CatId = "black" };
-            Tag tag = new Tag { Name = catTagName };
-            CatTag catTag = new CatTag { Cat = cat, Tag= tag };
-            cat.CatTags.Add(catTag);
             List<Cat> cats = new List<Cat>();
             cats.Add(cat);
             _appRepository.Setup(x => x.GetAll()).ReturnsAsync(cats);

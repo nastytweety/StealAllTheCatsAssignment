@@ -5,7 +5,6 @@ using StealAllTheCatsAssignment.Application.IService;
 using StealAllTheCatsAssignment.Application.Mapperly;
 using StealAllTheCatsAssignment.Data;
 using StealAllTheCatsAssignment.Infrastructure.Repository;
-using StealAllTheCatsAssignment.Application.Mapper;
 using StealAllTheCatsAssignment.Services;
 using System.Reflection;
 
@@ -21,8 +20,6 @@ builder.Services.AddScoped<IAppService, AppService>();
 builder.Services.AddScoped<IAppRepository, AppRepository>();
 
 builder.Services.AddScoped<IMapper, Mapper>();
-
-builder.Services.AddScoped<IDtoMapper, DtoMapper>();
 
 builder.Services.AddHttpClient();
 

@@ -75,7 +75,7 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             return true;
         }
 
-        public async Task<IEnumerable<JsonCatDto>?> InitializeClient()
+        public async Task<IEnumerable<JsonCatDto>?> InitializeAndDeserialize()
         {
             var baseAddress = _configuration.GetSection("Settings").GetValue<string>("baseUrl");
             if (baseAddress == null)
