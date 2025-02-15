@@ -37,8 +37,8 @@ namespace StealAllTheCatsAssignment.API.Controllers
         {
             var response = await _appService.DeserializeAndStoreInDb();
             if (response.Status.Equals("200"))
-                return Ok(new ResponseDto { Message = "Cats successfully stored in db" });
-            return BadRequest(new ResponseDto { Message = "Cats could not be stored in db" });
+                return Ok(response.Message);
+            return BadRequest(response.Message);
         }
 
         /// <summary>
