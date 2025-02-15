@@ -5,7 +5,7 @@ using StealAllTheCatsAssignment.Application.IService;
 using StealAllTheCatsAssignment.Application.Mapperly;
 using StealAllTheCatsAssignment.Data;
 using StealAllTheCatsAssignment.Infrastructure.Repository;
-using StealAllTheCatsAssignment.Services;
+using StealAllTheCatsAssignment.Application.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);

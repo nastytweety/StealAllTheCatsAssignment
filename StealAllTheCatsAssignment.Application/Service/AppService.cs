@@ -4,7 +4,7 @@ using StealAllTheCatsAssignment.Application.IService;
 using StealAllTheCatsAssignment.Domain.Models;
 using StealAllTheCatsAssignment.Application.Mapperly;
 
-namespace StealAllTheCatsAssignment.Services
+namespace StealAllTheCatsAssignment.Application.Services
 {
     public class AppService : IAppService
     {
