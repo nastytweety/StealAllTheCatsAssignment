@@ -6,7 +6,7 @@ is an example of consuming and providing webservices illustrating clean architec
 Clone repository 
 Restore NuGet Packages 
 Set your connectionstring in appsettings.json
-Manage user secrets and add the to the secrets.json file the apiKey
+Manage user secrets and add to the secrets.json file the apiKey
 {
   "apiKey": "live_l9OHn9fSQku2PzL9yUzb3GU1npHpIfDvF64vR5Oy4CASU9Oo1MgcJsZybbsLEEn3"
 }
