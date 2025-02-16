@@ -25,9 +25,9 @@ namespace StealAllTheCatsAssignment.Application.Services
             foreach (var catWithTags in catsWithTags) 
             {
                 var cat = _mapper.MapJsonCatDtoToCatEntity(catWithTags);
-                cat.Image = await _appRepository.GetFileFromUrl(catWithTags.url);
+                cat.Image = await _appRepository.GetImageFromUrl(catWithTags.url);
                 var tags = MapJsonCatDtoToTagEntity(catWithTags);
-                var response = await _appRepository.Add(cat, tags);
+                var response = await _appRepository.AddCatWithTags(cat, tags);
                 if(response == false)
                     return new ResponseDto { Status = "400", Message = "Cats could not be stored in db" };
             }
@@ -36,12 +36,12 @@ namespace StealAllTheCatsAssignment.Application.Services
 
         public async Task<Cat?> GetCatById(int id)
         {
-            return await _appRepository.Get(id);
+            return await _appRepository.GetCat(id);
         }
 
         public async Task<IEnumerable<Cat>?> GetCatsByTag(string tagName)
         {
-            var cats = await _appRepository.GetAll();
+            var cats = await _appRepository.GetAllCats();
             var tag = await _appRepository.GetTag(tagName);
             if (cats is null || tag is null)
                 return null;
@@ -51,7 +51,7 @@ namespace StealAllTheCatsAssignment.Application.Services
 
         public async Task<IEnumerable<Cat>?> GetAllCats()
         {
-            return await _appRepository.GetAll();
+            return await _appRepository.GetAllCats();
         }
 
         private IEnumerable<Tag> MapJsonCatDtoToTagEntity(JsonCatDto catDto)

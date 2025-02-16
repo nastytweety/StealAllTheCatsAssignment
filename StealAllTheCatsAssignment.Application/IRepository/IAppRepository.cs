@@ -4,12 +4,12 @@ namespace StealAllTheCatsAssignment.Application.IRepository
 {
     public interface IAppRepository
     {
-        public Task<bool> Add(Cat cat, IEnumerable<Tag> tags);
+        public Task<bool> AddCatWithTags(Cat cat, IEnumerable<Tag> tags);
         public Task<Tag?> GetTag(string tagName);
-        public Task<Cat?> Get(int id);
-        public Task<IEnumerable<Cat>?> GetAll();
+        public Task<Cat?> GetCat(int id);
+        public Task<IEnumerable<Cat>?> GetAllCats();
         public Task<IEnumerable<JsonCatDto>?> InitializeAndDeserialize();
-        public Task<byte[]> GetFileFromUrl(string url);
+        public Task<byte[]> GetImageFromUrl(string url);
         public Task ClearDb();
     }
 }

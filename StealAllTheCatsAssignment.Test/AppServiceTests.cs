@@ -29,7 +29,7 @@ namespace StealAllTheCatsAssignment.Tests
             Tag tag = new Tag { Name = "friendly", Created = DateTime.Now };
             List<Tag> tags = new List<Tag> { tag };
 
-            _appRepository.Setup(x => x.Add(cat, tags)).ReturnsAsync(true);
+            _appRepository.Setup(x => x.AddCatWithTags(cat, tags)).ReturnsAsync(true);
 
             // Act
             await _appService.DeserializeAndStoreInDb();
@@ -47,7 +47,7 @@ namespace StealAllTheCatsAssignment.Tests
             int catId = 1;
             string CatName = "Black Cat";
             var cat = new Cat { Id = catId, CatId = CatName, Created = DateTime.Now };
-            _appRepository.Setup(x => x.Get(catId)).ReturnsAsync(cat);
+            _appRepository.Setup(x => x.GetCat(catId)).ReturnsAsync(cat);
             // Act
             var testCat = await _appService.GetCatById(catId);
             if(testCat is null)
@@ -62,7 +62,7 @@ namespace StealAllTheCatsAssignment.Tests
         {
             // Arrange
             int catId = 1;
-            _appRepository.Setup(x => x.Get(It.IsAny<int>())).ReturnsAsync(() => null);
+            _appRepository.Setup(x => x.GetCat(It.IsAny<int>())).ReturnsAsync(() => null);
             // Act
             var testCat = await _appService.GetCatById(catId);
 
@@ -78,7 +78,7 @@ namespace StealAllTheCatsAssignment.Tests
             Cat cat = new Cat { CatId = "black" };
             List<Cat> cats = new List<Cat>();
             cats.Add(cat);
-            _appRepository.Setup(x => x.GetAll()).ReturnsAsync(cats);
+            _appRepository.Setup(x => x.GetAllCats()).ReturnsAsync(cats);
             _appRepository.Setup(x => x.GetTag(catTagName)).ReturnsAsync(() => null);
             // Act
             var testCat = await _appService.GetCatsByTag(catTagName);

@@ -22,7 +22,7 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             _logger = logger;
         }
 
-        public async Task<Cat?> Get(int id)
+        public async Task<Cat?> GetCat(int id)
         {
             return await _context.Cats.Where(x=>x.Id == id).AsNoTracking().SingleOrDefaultAsync();
         }
@@ -33,12 +33,12 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             return await _context.Tags.Where(x => x.Name == tagName).AsNoTracking().SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Cat>?> GetAll()
+        public async Task<IEnumerable<Cat>?> GetAllCats()
         {
             return await _context.Cats.Include(x=>x.CatTags).AsNoTracking().ToListAsync();
         }
 
-        public async Task<bool> Add(Cat cat, IEnumerable<Tag> tags)
+        public async Task<bool> AddCatWithTags(Cat cat, IEnumerable<Tag> tags)
         {
             if (await _context.Cats.Where(c => c.CatId == cat.CatId).SingleOrDefaultAsync() is not null)
                 return true;
@@ -76,7 +76,6 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             }
             return true;
         }
-
         public async Task<IEnumerable<JsonCatDto>?> InitializeAndDeserialize()
         {
             var baseAddress = _configuration.GetSection("Settings").GetValue<string>("baseUrl");
@@ -89,7 +88,7 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             return JsonSerializer.Deserialize<List<JsonCatDto>>(jsonData); 
         }
 
-        public async Task<byte[]> GetFileFromUrl(string url)
+        public async Task<byte[]> GetImageFromUrl(string url)
         {
             var image = await _httpClient.GetAsync(url);
             return await image.Content.ReadAsByteArrayAsync();
