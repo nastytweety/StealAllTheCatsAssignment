@@ -12,14 +12,11 @@ namespace StealAllTheCatsAssignment.API.Controllers
     [Route("api/cats")]
     public class CatsController : ControllerBase
     {
-
-        private readonly ILogger<CatsController> _logger;
         private readonly IAppService _appService;
         private readonly IMapper _mapper;
 
-        public CatsController(ILogger<CatsController> logger, IAppService appService, IMapper mapper)
+        public CatsController(IAppService appService, IMapper mapper)
         {
-            _logger = logger;
             _appService = appService;
             _mapper = mapper;
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using StealAllTheCatsAssignment.Application.IRepository;
 using StealAllTheCatsAssignment.Data;
 using StealAllTheCatsAssignment.Domain.Models;
@@ -12,11 +13,13 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
-        public AppRepository(AppDbContext context, HttpClient httpClient, IConfiguration configuration)
+        private readonly ILogger<AppRepository> _logger;
+        public AppRepository(AppDbContext context, HttpClient httpClient, IConfiguration configuration, ILogger<AppRepository> logger)
         {
             _context = context;
             _httpClient = httpClient;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public async Task<Cat?> Get(int id)
@@ -37,15 +40,14 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
 
         public async Task<bool> Add(Cat cat, IEnumerable<Tag> tags)
         {
+            if (await _context.Cats.Where(c => c.CatId == cat.CatId).SingleOrDefaultAsync() is not null)
+                return true;
+
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    if (await _context.Cats.Where(c => c.CatId == cat.CatId).SingleOrDefaultAsync() is null)
-                        await _context.Cats.AddAsync(cat);
-                    else
-                        return true;
-
+                    await _context.Cats.AddAsync(cat);
                     foreach (var tag in tags)
                     {
                         if (await _context.Tags.Where(c => c.Name == tag.Name).SingleOrDefaultAsync() is null)
@@ -68,7 +70,7 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    Console.WriteLine(ex.ToString());
+                    _logger.LogError(ex.Message);
                     return false;
                 }
             }
