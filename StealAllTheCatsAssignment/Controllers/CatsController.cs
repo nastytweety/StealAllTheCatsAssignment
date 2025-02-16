@@ -3,7 +3,7 @@ using StealAllTheCatsAssignment.Application.DTOs;
 using StealAllTheCatsAssignment.Application.IService;
 using StealAllTheCatsAssignment.Application.Mapperly;
 using StealAllTheCatsAssignment.Domain.Models;
-using StealAllTheCatsAssignment.Filters;
+using StealAllTheCatsAssignment.API.Filters;
 
 namespace StealAllTheCatsAssignment.API.Controllers
 {

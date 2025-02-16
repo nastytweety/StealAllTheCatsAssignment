@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Net;
 
-namespace StealAllTheCatsAssignment.Filters
+namespace StealAllTheCatsAssignment.API.Filters
 {
     public class ValidationActionFilter: ActionFilterAttribute, IActionFilter
     {
