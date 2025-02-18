@@ -36,11 +36,12 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
 
         public async Task<IEnumerable<Cat>?> GetAllCats(string? tagName)
         {
-            var cats = await _context.Cats.AsNoTracking().ToListAsync();
+           
             if (tagName == null)
-                return cats;
+                return await _context.Cats.AsNoTracking().ToListAsync(); 
             else
             {
+                var cats = await _context.Cats.Include(x=>x.CatTags).AsNoTracking().ToListAsync();
                 var tag = await _context.Tags.Where(x => x.Name == tagName).SingleOrDefaultAsync();
                 if (tag is null)
                     return null;
