@@ -41,17 +41,13 @@ namespace StealAllTheCatsAssignment.Application.Services
 
         public async Task<IEnumerable<Cat>?> GetCatsByTag(string tagName)
         {
-            var cats = await _appRepository.GetAllCats();
-            var tag = await _appRepository.GetTag(tagName);
-            if (cats is null || tag is null)
-                return null;
-            var catsWithTag = cats.Where(x => x.CatTags.Select(x=>x.TagId).Contains(tag.Id)).ToList();
-            return catsWithTag;
+            return await _appRepository.GetAllCats(tagName);
+           
         }
 
         public async Task<IEnumerable<Cat>?> GetAllCats()
         {
-            return await _appRepository.GetAllCats();
+            return await _appRepository.GetAllCats(null);
         }
 
         private IEnumerable<Tag> MapJsonCatDtoToTagEntity(JsonCatDto catDto)

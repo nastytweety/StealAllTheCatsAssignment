@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace StealAllTheCatsAssignment.Data
+namespace StealAllTheCatsAssignment.Infrastructure.Data
 {
     public static class EntityExtensions
     {

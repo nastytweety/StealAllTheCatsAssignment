@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using StealAllTheCatsAssignment.Domain.Models;
 
-namespace StealAllTheCatsAssignment.Data
+namespace StealAllTheCatsAssignment.Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {

@@ -78,7 +78,7 @@ namespace StealAllTheCatsAssignment.Tests
             Cat cat = new Cat { CatId = "black" };
             List<Cat> cats = new List<Cat>();
             cats.Add(cat);
-            _appRepository.Setup(x => x.GetAllCats()).ReturnsAsync(cats);
+            _appRepository.Setup(x => x.GetAllCats(null)).ReturnsAsync(cats);
             _appRepository.Setup(x => x.GetTag(catTagName)).ReturnsAsync(() => null);
             // Act
             var testCat = await _appService.GetCatsByTag(catTagName);

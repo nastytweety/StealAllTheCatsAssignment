@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 using StealAllTheCatsAssignment.Application.IRepository;
 using StealAllTheCatsAssignment.Application.IService;
 using StealAllTheCatsAssignment.Application.Mapperly;
-using StealAllTheCatsAssignment.Data;
+using StealAllTheCatsAssignment.Infrastructure.Data;
 using StealAllTheCatsAssignment.Infrastructure.Repository;
 using StealAllTheCatsAssignment.Application.Services;
 using System.Reflection;

@@ -2,9 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using StealAllTheCatsAssignment.Application.IRepository;
-using StealAllTheCatsAssignment.Data;
+using StealAllTheCatsAssignment.Infrastructure.Data;
 using StealAllTheCatsAssignment.Domain.Models;
 using System.Text.Json;
+using Azure;
 
 namespace StealAllTheCatsAssignment.Infrastructure.Repository
 {
@@ -33,9 +34,19 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             return await _context.Tags.Where(x => x.Name == tagName).AsNoTracking().SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Cat>?> GetAllCats()
+        public async Task<IEnumerable<Cat>?> GetAllCats(string? tagName)
         {
-            return await _context.Cats.Include(x=>x.CatTags).AsNoTracking().ToListAsync();
+            var cats = await _context.Cats.AsNoTracking().ToListAsync();
+            if (tagName == null)
+                return cats;
+            else
+            {
+                var tag = await _context.Tags.Where(x => x.Name == tagName).SingleOrDefaultAsync();
+                if (tag is null)
+                    return null;
+                return cats.Where(x => x.CatTags.Select(x => x.TagId).Contains(tag.Id)).ToList();
+            }
+               
         }
 
         public async Task<bool> AddCatWithTags(Cat cat, IEnumerable<Tag> tags)
