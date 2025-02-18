@@ -71,20 +71,20 @@ namespace StealAllTheCatsAssignment.Tests
         }
 
         [Fact]
-        public async Task GetCatByTag_ShouldReturnNull_WhenCatsDoesNotExist()
+        public async Task GetCatByTag_ShouldReturnCat_WhenCatsDoesExists()
         {
             // Arrange
             var catTagName = "friendly";
             Cat cat = new Cat { CatId = "black" };
             List<Cat> cats = new List<Cat>();
             cats.Add(cat);
-            _appRepository.Setup(x => x.GetAllCats(null)).ReturnsAsync(cats);
+            _appRepository.Setup(x => x.GetAllCats("friendly")).ReturnsAsync(cats);
             _appRepository.Setup(x => x.GetTag(catTagName)).ReturnsAsync(() => null);
             // Act
             var testCat = await _appService.GetCatsByTag(catTagName);
 
             // Assert
-            Assert.Null(testCat);
+            Assert.Equal(cats,testCat);
         }
     }
 }
