@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using StealAllTheCatsAssignment.Application.IRepository;
 using StealAllTheCatsAssignment.Infrastructure.Data;
 using StealAllTheCatsAssignment.Domain.Models;
 using System.Text.Json;
 using Azure;
+using StealAllTheCatsAssignment.Application.IRepository;
 
 namespace StealAllTheCatsAssignment.Infrastructure.Repository
 {
@@ -21,33 +21,6 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             _httpClient = httpClient;
             _configuration = configuration;
             _logger = logger;
-        }
-
-        public async Task<Cat?> GetCat(int id)
-        {
-            return await _context.Cats.Where(x=>x.Id == id).AsNoTracking().SingleOrDefaultAsync();
-        }
-
-
-        public async Task<Tag?> GetTag(string tagName)
-        {
-            return await _context.Tags.Where(x => x.Name == tagName).AsNoTracking().SingleOrDefaultAsync();
-        }
-
-        public async Task<IEnumerable<Cat>?> GetAllCats(string? tagName)
-        {
-           
-            if (tagName == null)
-                return await _context.Cats.AsNoTracking().ToListAsync(); 
-            else
-            {
-                var cats = await _context.Cats.Include(x=>x.CatTags).AsNoTracking().ToListAsync();
-                var tag = await _context.Tags.Where(x => x.Name == tagName).SingleOrDefaultAsync();
-                if (tag is null)
-                    return null;
-                return cats.Where(x => x.CatTags.Select(x => x.TagId).Contains(tag.Id)).ToList();
-            }
-               
         }
 
         public async Task<bool> AddCatWithTags(Cat cat, IEnumerable<Tag> tags)
