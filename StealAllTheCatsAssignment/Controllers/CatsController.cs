@@ -13,12 +13,10 @@ namespace StealAllTheCatsAssignment.API.Controllers
     public class CatsController : ControllerBase
     {
         private readonly IAppService _appService;
-        private readonly IMapper _mapper;
 
-        public CatsController(IAppService appService, IMapper mapper)
+        public CatsController(IAppService appService)
         {
             _appService = appService;
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -68,16 +66,17 @@ namespace StealAllTheCatsAssignment.API.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<CatDto>?> Get([FromQuery] QueryModel query)
         {
-            IEnumerable<Cat>? cats;
+            IEnumerable<CatDto>? cats;
             if (query.tag is null)
-                cats = await _appService.GetCatsByTag(null);
+                cats = await _appService.GetCatsByTag(null, query.page, query.pageSize);
             else
-                cats = await _appService.GetCatsByTag(query.tag);
+                cats = await _appService.GetCatsByTag(query.tag,query.page,query.pageSize);
 
             if (cats is null)
                 return NotFound();
 
-            return Ok(_mapper.MapCatsToCatDtos(cats.Skip((query.page - 1) * query.pageSize).Take(query.pageSize)));
+            return Ok(cats);
+                //_mapper.MapCatsToCatDtos(cats.Skip((query.page - 1) * query.pageSize).Take(query.pageSize)));
         }
     }
 }

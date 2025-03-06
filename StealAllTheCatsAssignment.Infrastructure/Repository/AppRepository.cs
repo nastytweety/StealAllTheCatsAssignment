@@ -6,6 +6,7 @@ using StealAllTheCatsAssignment.Domain.Models;
 using System.Text.Json;
 using Azure;
 using StealAllTheCatsAssignment.Application.IRepository;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace StealAllTheCatsAssignment.Infrastructure.Repository
 {
@@ -84,9 +85,17 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             return await _context.Cats.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Cat>> GetAllCats()
+        public async Task<IEnumerable<Cat>?> GetAllCats(string? tagName, int pageNum, int pageSize)
         {
-            return await _context.Cats.ToListAsync();
+            if(tagName is null)
+                return await _context.Cats.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+            else
+            {
+                var tag = await GetTagByName(tagName);
+                if (tag is null)
+                    return null;
+                return await _context.CatTags.Where(x=>x.TagId == tag.Id).Select(x=>x.Cat).Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+            }
         }
 
         public async Task<Tag?> GetTagByName(string tagName)

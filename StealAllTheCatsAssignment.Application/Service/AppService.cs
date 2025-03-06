@@ -31,10 +31,13 @@ namespace StealAllTheCatsAssignment.Application.Services
                 cat.Image = await _appRepository.GetImageFromUrl(catWithTags.url);
                 var tags = MapJsonCatDtoToTagEntity(catWithTags);
                 var response = await _appRepository.AddCatWithTags(cat, tags);
-                if(response == false)
+                if (response == false)
+                {
+                    _logger.LogWarning("Cats could not be stored in db");
                     return new ResponseDto { Status = "400", Message = "Cats could not be stored in db" };
+                }
             }
-            _logger.LogWarning("Cats Fetched");
+            _logger.LogWarning("Cats successfully stored in db");
             return new ResponseDto { Status = "200", Message = "Cats successfully stored in db" };
         }
 
@@ -43,18 +46,12 @@ namespace StealAllTheCatsAssignment.Application.Services
             return await _appRepository.GetCatById(id);
         }
 
-        public async Task<IEnumerable<Cat>?> GetCatsByTag(string? tagName)
+        public async Task<IEnumerable<CatDto>?> GetCatsByTag(string? tagName, int pageNum, int pageSize)
         {
-            if (tagName is null)
-                return await _appRepository.GetAllCats();
-            else
-            {
-                var cats = await _appRepository.GetAllCats();
-                var tag = _appRepository.GetTagByName(tagName);
-                if (tag is null)
-                    return null;
-                return cats.Where(x => x.CatTags.Select(x => x.TagId).Contains(tag.Id)).ToList();
-            }
+            var cats = await _appRepository.GetAllCats(tagName, pageNum, pageSize);
+            if(cats is not null)
+                return _mapper.MapCatsToCatDtos(cats);
+            return null;
         }
 
 
