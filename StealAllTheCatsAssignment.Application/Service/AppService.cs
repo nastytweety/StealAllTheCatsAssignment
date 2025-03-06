@@ -11,15 +11,11 @@ namespace StealAllTheCatsAssignment.Application.Services
     {
         private readonly ILogger<AppService> _logger;
         private readonly IAppRepository _appRepository;
-        private readonly IGenericRepository<Cat> _catRepository;
-        private readonly IGenericRepository<Tag> _tagRepository;
         private readonly IMapper _mapper;
 
-        public AppService(ILogger<AppService> logger,IAppRepository appRepository, IGenericRepository<Cat> catRepository,IGenericRepository<Tag> tagRepository,IMapper mapper) {
+        public AppService(ILogger<AppService> logger,IAppRepository appRepository, IMapper mapper) {
             _logger = logger;
             _appRepository = appRepository;
-            _catRepository = catRepository;
-            _tagRepository = tagRepository;
             _mapper = mapper;
         }
 
@@ -44,27 +40,23 @@ namespace StealAllTheCatsAssignment.Application.Services
 
         public async Task<Cat?> GetCatById(int id)
         {
-            return await _catRepository.Get(id);
+            return await _appRepository.GetCatById(id);
         }
 
-        public async Task<IEnumerable<Cat>?> GetCatsByTag(string tagName)
+        public async Task<IEnumerable<Cat>?> GetCatsByTag(string? tagName)
         {
-            if (tagName == null)
-                return await _catRepository.GetAll();
+            if (tagName is null)
+                return await _appRepository.GetAllCats();
             else
             {
-                var cats = await _catRepository.GetAll();
-                var tag = _tagRepository.Find(x => x.Name == tagName).Single();
+                var cats = await _appRepository.GetAllCats();
+                var tag = _appRepository.GetTagByName(tagName);
                 if (tag is null)
                     return null;
                 return cats.Where(x => x.CatTags.Select(x => x.TagId).Contains(tag.Id)).ToList();
             }
         }
 
-        public async Task<IEnumerable<Cat>?> GetAllCats()
-        {
-            return await _catRepository.GetAll();
-        }
 
         private IEnumerable<Tag> MapJsonCatDtoToTagEntity(JsonCatDto catDto)
         {

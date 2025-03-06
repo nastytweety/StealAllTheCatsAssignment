@@ -34,12 +34,6 @@ builder.Logging.AddSerilog(Log.Logger);
 // Add services to the container.
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnStr")));
 
-builder.Services.AddScoped<IGenericRepository<Cat>, GenericRepository<Cat>>();
-
-builder.Services.AddScoped<IGenericRepository<Tag>, GenericRepository<Tag>>();
-
-builder.Services.AddScoped<IGenericRepository<CatTag>, GenericRepository<CatTag>>();
-
 builder.Services.AddScoped<IAppService, AppService>();
 
 builder.Services.AddScoped<IAppRepository, AppRepository>();

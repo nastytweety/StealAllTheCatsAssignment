@@ -13,14 +13,12 @@ namespace StealAllTheCatsAssignment.Tests
 
         private readonly AppService _appService;
         private readonly ILogger<AppService> _logger = Substitute.For<ILogger<AppService>>();
-        private readonly Mock<IGenericRepository<Cat>> _catRepository = new Mock<IGenericRepository<Cat>>();
-        private readonly Mock<IGenericRepository<Tag>> _tagRepository = new Mock<IGenericRepository<Tag>>();
         private readonly Mock<IAppRepository> _appRepository = new Mock<IAppRepository>();
         private readonly Mock<IMapper> _mapper = new Mock<IMapper>();
 
         public AppServiceTests()
         {
-            _appService = new AppService(_logger,_appRepository.Object,_catRepository.Object,_tagRepository.Object,_mapper.Object);
+            _appService = new AppService(_logger,_appRepository.Object,_mapper.Object);
         }
 
 
@@ -52,7 +50,6 @@ namespace StealAllTheCatsAssignment.Tests
             int catId = 1;
             string CatName = "Black Cat";
             var cat = new Cat { Id = catId, CatId = CatName, Created = DateTime.Now };
-            _catRepository.Setup(x => x.Get(catId)).ReturnsAsync(cat);
             // Act
             var testCat = await _appService.GetCatById(catId);
             if(testCat is null)
@@ -67,7 +64,6 @@ namespace StealAllTheCatsAssignment.Tests
         {
             // Arrange
             int catId = 1;
-            _catRepository.Setup(x => x.Get(It.IsAny<int>())).ReturnsAsync(() => null);
             // Act
             var testCat = await _appService.GetCatById(catId);
 

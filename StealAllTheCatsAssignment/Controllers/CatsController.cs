@@ -70,7 +70,7 @@ namespace StealAllTheCatsAssignment.API.Controllers
         {
             IEnumerable<Cat>? cats;
             if (query.tag is null)
-                cats = await _appService.GetAllCats();
+                cats = await _appService.GetCatsByTag(null);
             else
                 cats = await _appService.GetCatsByTag(query.tag);
 

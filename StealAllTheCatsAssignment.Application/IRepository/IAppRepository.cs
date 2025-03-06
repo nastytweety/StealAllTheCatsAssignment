@@ -7,5 +7,8 @@ namespace StealAllTheCatsAssignment.Application.IRepository
         public Task<bool> AddCatWithTags(Cat cat, IEnumerable<Tag> tags);
         public Task<IEnumerable<JsonCatDto>?> InitializeAndDeserialize();
         public Task<byte[]> GetImageFromUrl(string url);
+        public Task<Cat?> GetCatById(int id);
+        public Task<IEnumerable<Cat>> GetAllCats();
+        public Task<Tag?> GetTagByName(string tagName);
     }
 }

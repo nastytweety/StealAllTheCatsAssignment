@@ -79,5 +79,20 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             return await image.Content.ReadAsByteArrayAsync();
         }
 
+        public async Task<Cat?> GetCatById(int id)
+        {
+            return await _context.Cats.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Cat>> GetAllCats()
+        {
+            return await _context.Cats.ToListAsync();
+        }
+
+        public async Task<Tag?> GetTagByName(string tagName)
+        {
+            return await _context.Tags.Where(x => x.Name == tagName).SingleOrDefaultAsync();
+        }
+
     }
 }
