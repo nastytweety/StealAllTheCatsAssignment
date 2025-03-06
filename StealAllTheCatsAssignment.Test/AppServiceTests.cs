@@ -3,6 +3,8 @@ using StealAllTheCatsAssignment.Application.IRepository;
 using StealAllTheCatsAssignment.Application.Mapperly;
 using StealAllTheCatsAssignment.Domain.Models;
 using StealAllTheCatsAssignment.Application.Services;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 
 namespace StealAllTheCatsAssignment.Tests
 {
@@ -10,6 +12,7 @@ namespace StealAllTheCatsAssignment.Tests
     {
 
         private readonly AppService _appService;
+        private readonly ILogger<AppService> _logger = Substitute.For<ILogger<AppService>>();
         private readonly Mock<IGenericRepository<Cat>> _catRepository = new Mock<IGenericRepository<Cat>>();
         private readonly Mock<IGenericRepository<Tag>> _tagRepository = new Mock<IGenericRepository<Tag>>();
         private readonly Mock<IAppRepository> _appRepository = new Mock<IAppRepository>();
@@ -17,7 +20,7 @@ namespace StealAllTheCatsAssignment.Tests
 
         public AppServiceTests()
         {
-            _appService = new AppService(_appRepository.Object,_catRepository.Object,_tagRepository.Object,_mapper.Object);
+            _appService = new AppService(_logger,_appRepository.Object,_catRepository.Object,_tagRepository.Object,_mapper.Object);
         }
 
 

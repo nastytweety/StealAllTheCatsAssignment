@@ -79,15 +79,5 @@ namespace StealAllTheCatsAssignment.Infrastructure.Repository
             return await image.Content.ReadAsByteArrayAsync();
         }
 
-        public async Task ClearDb()
-        {
-            if (_context.Cats.Any() || _context.Tags.Any())
-            {
-                _context.Cats.Clear();
-                _context.Tags.Clear();
-                await _context.SaveChangesAsync();
-            }
-            return;
-        }
     }
 }

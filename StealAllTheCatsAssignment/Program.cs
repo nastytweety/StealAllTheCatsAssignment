@@ -1,19 +1,44 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using StealAllTheCatsAssignment.Application.IRepository;
 using StealAllTheCatsAssignment.Application.IService;
 using StealAllTheCatsAssignment.Application.Mapperly;
+using StealAllTheCatsAssignment.Application.Services;
+using StealAllTheCatsAssignment.Domain.Models;
 using StealAllTheCatsAssignment.Infrastructure.Data;
 using StealAllTheCatsAssignment.Infrastructure.Repository;
-using StealAllTheCatsAssignment.Application.Services;
 using System.Reflection;
-using StealAllTheCatsAssignment.Application.IRepository;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigurationManager configuration = builder.Configuration;
 
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    //.Enrich.FromLogContext()
+    //.WriteTo.MSSqlServer(builder.Configuration.GetConnectionString("ConnStr"),
+    //    new MSSqlServerSinkOptions()
+    //    {
+    //        AutoCreateSqlDatabase = false,
+    //        AutoCreateSqlTable = false,
+    //        TableName = "Logs"
+    //    })
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(Log.Logger);
+
+
 // Add services to the container.
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnStr")));
+
+builder.Services.AddScoped<IGenericRepository<Cat>, GenericRepository<Cat>>();
+
+builder.Services.AddScoped<IGenericRepository<Tag>, GenericRepository<Tag>>();
+
+builder.Services.AddScoped<IGenericRepository<CatTag>, GenericRepository<CatTag>>();
 
 builder.Services.AddScoped<IAppService, AppService>();
 

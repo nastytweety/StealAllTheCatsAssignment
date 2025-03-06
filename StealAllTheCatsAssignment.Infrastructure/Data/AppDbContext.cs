@@ -9,6 +9,7 @@ namespace StealAllTheCatsAssignment.Infrastructure.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
+        public DbSet<LogEntry> Logs { get; set; }
         public DbSet<Cat> Cats { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<CatTag> CatTags { get; set; }

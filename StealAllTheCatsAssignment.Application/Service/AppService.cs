@@ -1,20 +1,22 @@
-﻿using StealAllTheCatsAssignment.Application.DTOs;
-using StealAllTheCatsAssignment.Application.IService;
-using StealAllTheCatsAssignment.Domain.Models;
-using StealAllTheCatsAssignment.Application.Mapperly;
+﻿using Microsoft.Extensions.Logging;
+using StealAllTheCatsAssignment.Application.DTOs;
 using StealAllTheCatsAssignment.Application.IRepository;
-using Microsoft.EntityFrameworkCore;
+using StealAllTheCatsAssignment.Application.IService;
+using StealAllTheCatsAssignment.Application.Mapperly;
+using StealAllTheCatsAssignment.Domain.Models;
 
 namespace StealAllTheCatsAssignment.Application.Services
 {
     public class AppService : IAppService
     {
+        private readonly ILogger<AppService> _logger;
         private readonly IAppRepository _appRepository;
         private readonly IGenericRepository<Cat> _catRepository;
         private readonly IGenericRepository<Tag> _tagRepository;
         private readonly IMapper _mapper;
 
-        public AppService(IAppRepository appRepository, IGenericRepository<Cat> catRepository,IGenericRepository<Tag> tagRepository,IMapper mapper) {
+        public AppService(ILogger<AppService> logger,IAppRepository appRepository, IGenericRepository<Cat> catRepository,IGenericRepository<Tag> tagRepository,IMapper mapper) {
+            _logger = logger;
             _appRepository = appRepository;
             _catRepository = catRepository;
             _tagRepository = tagRepository;
@@ -36,6 +38,7 @@ namespace StealAllTheCatsAssignment.Application.Services
                 if(response == false)
                     return new ResponseDto { Status = "400", Message = "Cats could not be stored in db" };
             }
+            _logger.LogWarning("Cats Fetched");
             return new ResponseDto { Status = "200", Message = "Cats successfully stored in db" };
         }
 
